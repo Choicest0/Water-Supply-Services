@@ -1,92 +1,221 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Water Supply Services - Healthy Village</title>
-  <style>
-    :root {
-      --primary: #15803d;
-      --accent: #0284c7;
-      --bg-light: #f0fdf4;
-      --text: #1f2937;
-    }
-    
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: var(--text); background: #fafafa; line-height: 1.6; }
-    
-    .hero {
-      position: relative;
-      height: 60vh;
-      min-height: 400px;
-      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
-                  url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      color: white;
-      padding: 0 20px;
-    }
-    
-    .hero-content h1 { font-size: 2.8rem; margin-bottom: 12px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-    .hero-content p { font-size: 1.25rem; max-width: 600px; margin: 0 auto 24px; }
-    
-    .btn {
-      display: inline-block;
-      padding: 12px 28px;
-      background-color: var(--primary);
-      color: white;
-      text-decoration: none;
-      border-radius: 30px;
-      font-weight: 600;
-      transition: background 0.3s ease;
-    }
-    .btn:hover { background-color: #166534; }
-    
-    .container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
-    
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
-    
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-      border-top: 4px solid var(--primary);
-      transition: transform 0.2s ease;
-    }
-    .card:hover { transform: translateY(-5px); }
-    .card h3 { color: var(--primary); margin-bottom: 12px; }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regional Water Telemetry & Safety Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #f4f7f6;
+            --card-bg: #ffffff;
+            --primary: #0284c7;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --safe-bg: #dcfce7;
+            --safe-text: #166534;
+            --warning-bg: #fef9c3;
+            --warning-text: #854d0e;
+            --critical-bg: #fee2e2;
+            --critical-text: #991b1b;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 24px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--text-main);
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            padding: 10px 16px;
+            font-weight: 600;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover { opacity: 0.9; }
+        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-secondary { background-color: #e2e8f0; color: var(--text-main); }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .metric-card {
+            background: var(--card-bg);
+            padding: 16px;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .metric-card h3 {
+            margin: 0 0 8px 0;
+            font-size: 0.875rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+        }
+
+        .metric-card .value {
+            font-size: 1.75rem;
+            font-weight: bold;
+        }
+
+        .table-container {
+            background: var(--card-bg);
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th, td {
+            padding: 12px 16px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        th {
+            background-color: #f8fafc;
+            color: var(--text-sub);
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+        }
+
+        .badge-SAFE { background-color: var(--safe-bg); color: var(--safe-text); }
+        .badge-WARNING { background-color: var(--warning-bg); color: var(--warning-text); }
+        .badge-CRITICAL { background-color: var(--critical-bg); color: var(--critical-text); }
+    </style>
 </head>
 <body>
 
-  <section class="hero">
-    <div class="hero-content">
-      <h1>Clean Water & Healthy Villages</h1>
-      <p>Empowering rural communities with sustainable, clean water supply and smart infrastructure.</p>
-      <a href="#services" class="btn">Explore Services</a>
-    </div>
-  </section>
+<div class="container">
+    <header>
+        <div>
+            <h1>🌊 Water Analytics Telemetry Dashboard</h1>
+            <p style="margin: 4px 0 0 0; color: var(--text-sub); font-size: 0.875rem;">Real-time grid metrics and field directive engine</p>
+        </div>
+        <div class="actions">
+            <button class="btn-secondary" onclick="generateBatchData()">🔄 Refresh Stream</button>
+            <button class="btn-primary" onclick="exportCSV()">💾 Export Report CSV</button>
+        </div>
+    </header>
 
-  <main class="container" id="services">
-    <h2 style="text-align: center; font-size: 2rem;">Our Core Initiatives</h2>
-    <div class="grid">
-      <div class="card">
-        <h3>Pure Drinking Water</h3>
-        <p>Implementation of filtration units ensuring access to safe, clean drinking water for every household.</p>
-      </div>
-      <div class="card">
-        <h3>Smart Sanitation</h3>
-        <p>Promoting health awareness, proper waste management, and sustainable drainage solutions.</p>
-      </div>
-      <div class="card">
-        <h3>Community Monitoring</h3>
-        <p>IoT and smart monitoring tools to maintain pipeline integrity and prevent supply disruptions.</p>
-      </div>
+    <div class="metrics-grid">
+        <div class="metric-card">
+            <h3>Total Nodes</h3>
+            <div class="value" id="total-nodes">0</div>
+        </div>
+        <div class="metric-card">
+            <h3>Safe Sectors</h3>
+            <div class="value" style="color: var(--safe-text);" id="safe-nodes">0</div>
+        </div>
+        <div class="metric-card">
+            <h3>Warnings</h3>
+            <div class="value" style="color: var(--warning-text);" id="warning-nodes">0</div>
+        </div>
+        <div class="metric-card">
+            <h3>Critical Alerts</h3>
+            <div class="value" style="color: var(--critical-text);" id="critical-nodes">0</div>
+        </div>
     </div>
-  </main>
 
-</body>
-</html>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Timestamp</th>
+                    <th>Sector ID</th>
+                    <th>pH Level</th>
+                    <th>TDS (PPM)</th>
+                    <th>Turbidity (NTU)</th>
+                    <th>Safety Status</th>
+                    <th>Field Directive</th>
+                </tr>
+            </thead>
+            <tbody id="telemetry-body">
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+    const sectors = ["Dehradun-North", "Dehradun-Sahaspur", "Dehradun-Vikasnagar", "Mussoorie-Suburbs"];
+    const scenarios = ["pristine", "pristine", "heavy_runoff", "chemical_shift"];
+    let currentData = [];
+
+    function getRandom(min, max, decimals = 2) {
+        const str = (Math.random() * (max - min) + min).toFixed(decimals);
+        return parseFloat(str);
+    }
+
+    function evaluateSafety(ph, tds, turbidity) {
+        if (tds > 600 || turbidity > 5.0) return "CRITICAL";
+        if (ph < 6.5 || ph > 8.5 || tds > 500) return "WARNING";
+        return "SAFE";
+    }
+
+    function getDirective(status) {
+        switch (status) {
+            case "SAFE": return "Parameters regular. No immediate localized intervention required.";
+            case "WARNING": return "Issue Boil Water Notice. Initiate minor tank filtration check.";
+            case "CRITICAL": return "HALT MAIN LINE PIPELINE! Route sample splits immediately to testing laboratory.";
+        }
+    }
+
+    function generateBatchData(count = 10) {
+        currentData = [];
+        const now = new Date().toISOString().replace('T', ' ').substring(0, 19);
+
+        for (let i = 0; i < count; i++) {
+            const sector = sectors[Math.floor(Math.random() * sectors.length)];
+            const scenario = scenarios[Math.floor(Math.random() * scenarios.length)];
+            let ph, tds, turbidity;
+
+            if (scenario === "pristine") {
+                ph = getRandom(7.0, 7.6);
+                tds = Math.floor(getRandom(150, 300));
+                turbidity = getRandom(0.8, 2.0);
+            } else if (scenario === "heavy_runoff") {
+                ph = getRandom(6.6, 7.2);
+                tds = Math.floor(getRandom(520, 680
