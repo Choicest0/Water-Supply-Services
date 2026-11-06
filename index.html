@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Water Supply Services - Healthy Village</title>
+  <style>
+    :root {
+      --primary: #15803d;
+      --accent: #0284c7;
+      --bg-light: #f0fdf4;
+      --text: #1f2937;
+    }
+    
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; color: var(--text); background: #fafafa; line-height: 1.6; }
+    
+    .hero {
+      position: relative;
+      height: 60vh;
+      min-height: 400px;
+      background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+                  url('https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+      padding: 0 20px;
+    }
+    
+    .hero-content h1 { font-size: 2.8rem; margin-bottom: 12px; font-weight: 700; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+    .hero-content p { font-size: 1.25rem; max-width: 600px; margin: 0 auto 24px; }
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 28px;
+      background-color: var(--primary);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: 600;
+      transition: background 0.3s ease;
+    }
+    .btn:hover { background-color: #166534; }
+    
+    .container { max-width: 1100px; margin: 60px auto; padding: 0 20px; }
+    
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
+    
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+      border-top: 4px solid var(--primary);
+      transition: transform 0.2s ease;
+    }
+    .card:hover { transform: translateY(-5px); }
+    .card h3 { color: var(--primary); margin-bottom: 12px; }
+  </style>
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-content">
+      <h1>Clean Water & Healthy Villages</h1>
+      <p>Empowering rural communities with sustainable, clean water supply and smart infrastructure.</p>
+      <a href="#services" class="btn">Explore Services</a>
+    </div>
+  </section>
+
+  <main class="container" id="services">
+    <h2 style="text-align: center; font-size: 2rem;">Our Core Initiatives</h2>
+    <div class="grid">
+      <div class="card">
+        <h3>Pure Drinking Water</h3>
+        <p>Implementation of filtration units ensuring access to safe, clean drinking water for every household.</p>
+      </div>
+      <div class="card">
+        <h3>Smart Sanitation</h3>
+        <p>Promoting health awareness, proper waste management, and sustainable drainage solutions.</p>
+      </div>
+      <div class="card">
+        <h3>Community Monitoring</h3>
+        <p>IoT and smart monitoring tools to maintain pipeline integrity and prevent supply disruptions.</p>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>
