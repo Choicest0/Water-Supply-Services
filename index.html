@@ -218,4 +218,71 @@
                 turbidity = getRandom(0.8, 2.0);
             } else if (scenario === "heavy_runoff") {
                 ph = getRandom(6.6, 7.2);
-                tds = Math.floor(getRandom(520, 680
+                tds = Math.floor(getRandom(520, 680));
+                turbidity = getRandom(5.5, 9.8);
+            } else {
+                ph = getRandom(8.7, 9.4);
+                tds = Math.floor(getRandom(320, 480));
+                turbidity = getRandom(1.5, 4.0);
+            }
+
+            const status = evaluateSafety(ph, tds, turbidity);
+            const directive = getDirective(status);
+
+            currentData.push({ timestamp: now, sector, ph, tds, turbidity, status, directive });
+        }
+
+        renderDashboard();
+    }
+
+    function renderDashboard() {
+        const tbody = document.getElementById("telemetry-body");
+        tbody.innerHTML = "";
+
+        let safe = 0, warning = 0, critical = 0;
+
+        currentData.forEach(row => {
+            if (row.status === "SAFE") safe++;
+            else if (row.status === "WARNING") warning++;
+            else if (row.status === "CRITICAL") critical++;
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td>${row.timestamp}</td>
+                <td><strong>${row.sector}</strong></td>
+                <td>${row.ph}</td>
+                <td>${row.tds}</td>
+                <td>${row.turbidity}</td>
+                <td><span class="badge badge-${row.status}">${row.status}</span></td>
+                <td>${row.directive}</td>
+            `;
+            tbody.appendChild(tr);
+        });
+
+        document.getElementById("total-nodes").innerText = currentData.length;
+        document.getElementById("safe-nodes").innerText = safe;
+        document.getElementById("warning-nodes").innerText = warning;
+        document.getElementById("critical-nodes").innerText = critical;
+    }
+
+    function exportCSV() {
+        let csvContent = "data:text/csv;charset=utf-8,Timestamp,Sector_ID,pH_Level,TDS_PPM,Turbidity_NTU,Safety_Status,Field_Directive\n";
+        currentData.forEach(row => {
+            csvContent += `"${row.timestamp}","${row.sector}",${row.ph},${row.tds},${row.turbidity},"${row.status}","${row.directive}"\n`;
+        });
+
+        const encodedUri = encodeURI(csvContent);
+        const link = document.createElement("a");
+        link.setAttribute("href", encodedUri);
+        link.setAttribute("download", "water_grid_report.csv");
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+
+    // Initial load
+    generateBatchData();
+</script>
+
+</body>
+</html>
